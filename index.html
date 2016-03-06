@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Package Calculator</title>
-  <link rel="stylesheet" href="package.css">
+  <link rel="stylesheet" href="css/package.css">
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
   <!-- Optional theme -->
@@ -142,7 +142,7 @@
       <tbody>
         <tr>
           <td><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></td>
-          <td>Insurance Credits <a href="#" data-toggle="popover" data-trigger="hover" title="Insurance Credit" data-content="TODO">[?]</a></td>
+          <td>Insurance Credits <sup>[<a href="#" data-toggle="popover" data-trigger="hover" title="Insurance Credit" data-content="TODO">?</a>]</sup></td>
           <td><span ng-bind="getInsurance()|currency"></span></td>
         </tr>
         <tr>
@@ -281,7 +281,7 @@
 <script src="https://cdn.jsdelivr.net/lodash/4.6.1/lodash.min.js"></script>
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-<script src="app.js"></script>
+<script src="js/app.js"></script>
 <script>
 $(document).ready(function(){
   $('[data-toggle="popover"]').popover();
