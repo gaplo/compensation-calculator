@@ -1,0 +1,24 @@
+{
+  "name": "compensation-calculator",
+  "homepage": "https://github.com/gaplo/compensation-calculator",
+  "authors": [
+    "gaplo <gaplo.ip@gmail.com>"
+  ],
+  "description": "Compensation Package Calculator",
+  "main": "index.html",
+  "moduleType": [],
+  "license": "UNKNOWN",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "lodash": "^4.6.1",
+    "bootstrap": "^3.3.6",
+    "ng-lodash": "^0.4.0",
+    "jquery": "^2.2.1"
+  }
+}
