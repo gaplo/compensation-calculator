@@ -1,4 +1,4 @@
-var app = angular.module('compensation', []);
+var app = angular.module('compensation', ['ngLodash']);
 
 app.constant('config', {
   'INSURANCE_CR_FACTOR': 0.041544, // Insurance credit factor 0.041544
@@ -12,10 +12,8 @@ app.constant('config', {
   'SEVERANCE_MAX_YEAR': 12 // Termination payment - max severance years is 12
 });
 
-app.controller('CalcCtrl', ['$scope', '$window', 'config',
-  function($scope, $window, config) {
-    $scope.Math = $window.Math;
-    $scope._ = $window._;
+app.controller('CalcCtrl', ['$scope', 'lodash', 'config',
+  function($scope, lodash, config) {
 
     // initialize
     $scope.base = 0.00;
@@ -29,15 +27,15 @@ app.controller('CalcCtrl', ['$scope', '$window', 'config',
     $scope.children = 0;
 
     $scope.getMonthlyWages = function() {
-      return _.ceil($scope.base / 12, 0);
+      return lodash.ceil($scope.base / 12, 0);
     }
 
     $scope.getMpf = function() {
-      return _.min([$scope.mpfEmployerCap, $scope.base * ($scope.mpfEmployer / 100.00)]);
+      return lodash.min([$scope.mpfEmployerCap, $scope.base * ($scope.mpfEmployer / 100.00)]);
     };
 
     $scope.getInsurance = function() {
-      return _.round($scope.base / 12 * config.INSURANCE_CR_FACTOR, 2);
+      return lodash.round($scope.base / 12 * config.INSURANCE_CR_FACTOR, 2);
     };
 
     $scope.getStdInsurance = function() {
@@ -61,11 +59,11 @@ app.controller('CalcCtrl', ['$scope', '$window', 'config',
     };
 
     $scope.getOrsoEmplrPercent = function() {
-      return _.min([config.ORSO_EMPLOYER_CON_MIN + ($scope.orsoEmployee / 2), config.ORSO_EMPLOYER_CON_MAX]);
+      return lodash.min([config.ORSO_EMPLOYER_CON_MIN + ($scope.orsoEmployee / 2), config.ORSO_EMPLOYER_CON_MAX]);
     };
 
     $scope.getOrsoEmplr = function() {
-      return _.round($scope.getOrsoEmplrPercent() / 100.00 * $scope.base, 2);
+      return lodash.round($scope.getOrsoEmplrPercent() / 100.00 * $scope.base, 2);
     };
 
     $scope.getOrsoMpfDiff = function() {
@@ -73,11 +71,11 @@ app.controller('CalcCtrl', ['$scope', '$window', 'config',
     };
 
     $scope.getDailyRate = function() {
-      return _.round($scope.base / $scope.workingDay, 2);
+      return lodash.round($scope.base / $scope.workingDay, 2);
     };
 
     $scope.getAnnualLeaveValuePerYear = function() {
-      return _.round($scope.getDailyRate() * $scope.leave, 2);
+      return lodash.round($scope.getDailyRate() * $scope.leave, 2);
     };
 
     $scope.getTotal = function() {
@@ -85,24 +83,24 @@ app.controller('CalcCtrl', ['$scope', '$window', 'config',
     };
 
     $scope.getBreakEvenPercent = function() {
-      return _.round(($scope.getTotal() / $scope.base - 1) * 100, 2);
+      return lodash.round(($scope.getTotal() / $scope.base - 1) * 100, 2);
     };
 
     $scope.getDirConYear = function() {
-      return $scope.dirConYear + _.round($scope.dirConMonth / 12, 2);
+      return $scope.dirConYear + lodash.round($scope.dirConMonth / 12, 2);
     };
 
     $scope.getPermYear = function() {
-      return $scope.permYear + _.round($scope.permMonth / 12, 2);
+      return $scope.permYear + lodash.round($scope.permMonth / 12, 2);
     }
 
     $scope.getStatutory = function() {
-      return _.round(_.min([config.STATUTORY_MAX, $scope.getMonthlyWages()]) * config.STATUTORY_FACTOR * ($scope.getDirConYear() + $scope.getPermYear()), 2);
+      return lodash.round(lodash.min([config.STATUTORY_MAX, $scope.getMonthlyWages()]) * config.STATUTORY_FACTOR * ($scope.getDirConYear() + $scope.getPermYear()), 2);
     };
 
     $scope.getSeverance = function() {
-      var permYear = _.min([config.SEVERANCE_MAX_YEAR, $scope.getPermYear()]);
-      return _.round(permYear * $scope.getMonthlyWages() + $scope.getDirConYear() * _.min([config.STATUTORY_MAX, $scope.getMonthlyWages()]) * config.STATUTORY_FACTOR - $scope.getStatutory(), 2);
+      var permYear = lodash.min([config.SEVERANCE_MAX_YEAR, $scope.getPermYear()]);
+      return lodash.round(permYear * $scope.getMonthlyWages() + $scope.getDirConYear() * lodash.min([config.STATUTORY_MAX, $scope.getMonthlyWages()]) * config.STATUTORY_FACTOR - $scope.getStatutory(), 2);
     };
 
     $scope.getTotalTermPay = function() {
