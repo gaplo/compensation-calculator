@@ -1,4 +1,4 @@
-var app = angular.module('compensation', ['ngLodash']);
+var app = angular.module('compensation', ['ngLodash','nvd3']);
 
 app.constant('config', {
   'INSURANCE_CR_FACTOR': 0.041544, // Insurance credit factor 0.041544
@@ -106,5 +106,64 @@ app.controller('CalcCtrl', ['$scope', 'lodash', 'config',
     $scope.getTotalTermPay = function() {
       return $scope.getStatutory() + $scope.getSeverance();
     }
+
+	$scope.options = {
+            chart: {
+                type: 'pieChart',
+                height: 450,
+                donut: true,
+                x: function(d){return d.key;},
+                y: function(d){return d.y;},
+                showLabels: true,
+
+                pie: {
+                    startAngle: function(d) { return d.startAngle/2 -Math.PI/2 },
+                    endAngle: function(d) { return d.endAngle/2 -Math.PI/2 }
+                },
+                duration: 500,
+                legend: {
+                    margin: {
+                        top: 5,
+                        right: 140,
+                        bottom: 5,
+                        left: 0
+                    }
+                }
+            }
+        };
+
+		$scope.data = [{ values: [], key: 'Random Walk' }];
+
+		setInterval(function() {
+        $scope.data = [
+            {
+                key: "Base",
+                y: lodash.round(($scope.base / $scope.getTotal()) * 100.00, 2)
+            },
+            {
+                key: "ORSO-MPF Diff",
+                y: lodash.round(($scope.getOrsoMpfDiff() / $scope.getTotal()) * 100.00, 2)
+            },
+            {
+                key: "Meal",
+                y: lodash.round(($scope.meal / $scope.getTotal()) * 100.00, 2)
+            },
+            {
+                key: "Bonus",
+                y: lodash.round(($scope.bonus / $scope.getTotal()) * 100.00, 2)
+            },
+            {
+                key: "Insurance",
+                y: lodash.round(($scope.getInsuranceTotal() / $scope.getTotal()) * 100.00, 2)
+            },
+            {
+                key: "Annual Leave",
+                y: lodash.round(($scope.getAnnualLeaveValuePerYear() / $scope.getTotal()) * 100.00, 2)
+            }
+        ];
+		$scope.$apply();
+		}, 500);
+	
+	
   }
 ]);
