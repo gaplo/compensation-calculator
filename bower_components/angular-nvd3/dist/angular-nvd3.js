@@ -1,5 +1,5 @@
 /**************************************************************************
-* AngularJS-nvD3, v1.0.5; MIT License; 03/12/2015 08:27
+* AngularJS-nvD3, v1.0.7; MIT
 * http://krispo.github.io/angular-nvd3
 **************************************************************************/
 (function(){
@@ -28,7 +28,8 @@
                         deepWatchOptions: true,
                         deepWatchData: true,
                         deepWatchDataDepth: 2, // 0 - by reference (cheap), 1 - by collection item (the middle), 2 - by value (expensive)
-                        debounce: 10 // default 10ms, time silence to prevent refresh while multiple options changes at a time
+                        debounce: 10, // default 10ms, time silence to prevent refresh while multiple options changes at a time
+                        debounceImmediate: true // immediate flag for debounce function
                     };
 
                     //flag indicates if directive and chart is ready
@@ -125,6 +126,8 @@
                                         'multibar',
                                         'pie',
                                         'scatter',
+                                        'scatters1',
+                                        'scatters2',
                                         'sparkline',
                                         'stack1',
                                         'stack2',
@@ -149,9 +152,12 @@
                                 }
 
                                 //TODO: need to fix bug in nvd3
+                                else if ((key === 'focusHeight') && options.chart.type === 'lineChart');
+                                else if ((key === 'focusHeight') && options.chart.type === 'lineWithFocusChart');
                                 else if ((key === 'xTickFormat' || key === 'yTickFormat') && options.chart.type === 'lineWithFocusChart');
                                 else if ((key === 'tooltips') && options.chart.type === 'boxPlotChart');
                                 else if ((key === 'tooltipXContent' || key === 'tooltipYContent') && options.chart.type === 'scatterChart');
+                                else if ((key === 'x' || key === 'y') && options.chart.type === 'forceDirectedGraph');
 
                                 else if (options.chart[key] === undefined || options.chart[key] === null){
                                     if (scope._config.extended) {
@@ -299,7 +305,8 @@
                                         'rangeBands',
                                         'scatter',
                                         'open',
-                                        'close'
+                                        'close',
+                                        'node'
                                     ].indexOf(key) === -1) {
                                     if (options[key] === undefined || options[key] === null){
                                         if (scope._config.extended) options[key] = value();
@@ -405,7 +412,7 @@
                     if (scope._config.deepWatchOptions) {
                         scope.$watch('options', nvd3Utils.debounce(function(newOptions){
                             if (!scope._config.disabled) scope.api.refresh();
-                        }, scope._config.debounce, true), true);
+                        }, scope._config.debounce, scope._config.debounceImmediate), true);
                     }
 
                     // Watching on data changing
@@ -519,6 +526,7 @@
                         , d3zoom
                         , zoomed
                         , unzoomed
+                        , zoomend
                         ;
 
                     // ensure nice axis
@@ -561,12 +569,20 @@
                         scope.chart.update();
                     };
 
+                    // zoomend event handler
+                    zoomend = function () {
+                        if (zoom.zoomend !== undefined) {
+                            zoom.zoomend();
+                        }
+                    };
+
                     // create d3 zoom handler
                     d3zoom = d3.behavior.zoom()
                         .x(xScale)
                         .y(yScale)
                         .scaleExtent(scaleExtent)
-                        .on('zoom', zoomed);
+                        .on('zoom', zoomed)
+                        .on('zoomend', zoomend);
 
                     scope.svg.call(d3zoom);
 

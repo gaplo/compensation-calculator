@@ -2,8 +2,8 @@ var app = angular.module('compensation', ['ngLodash','nvd3']);
 
 app.constant('config', {
   'INSURANCE_CR_FACTOR': 0.041544, // Insurance credit factor 0.041544
-  'INSURANCE_STD_CR': 10107.00, // Standard credit per audlt 10107.00
-  'INSURANCE_CHILD_CR': 9648.00, // Credit per child 9648.00
+  'INSURANCE_STD_CR': 10803.00, // Standard credit per audlt 10803.00
+  'INSURANCE_CHILD_CR': 10254.00, // Credit per child 10254.00
   'INSURANCE_HS_CR': 3800.00, // Health screening allowance 3800.00
   'ORSO_EMPLOYER_CON_MIN': 10.00, // ORSO - Employer min contribution 10.00%
   'ORSO_EMPLOYER_CON_MAX': 12.50, // ORSO - Employer max contribution 12.50%
@@ -163,7 +163,7 @@ app.controller('CalcCtrl', ['$scope', 'lodash', 'config',
         ];
 		$scope.$apply();
 		}, 500);
-	
-	
+
+
   }
 ]);
