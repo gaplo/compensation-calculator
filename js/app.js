@@ -105,7 +105,15 @@ app.controller('CalcCtrl', ['$scope', 'lodash', 'config',
 
     $scope.getTotalTermPay = function() {
       return $scope.getStatutory() + $scope.getSeverance();
-    }
+    };
+
+    $scope.getTotalAnnualComp = function() {
+      return $scope.base + $scope.bonus;
+    };
+
+    $scope.getRegularTermsBreakEven = function() {
+      return lodash.round(($scope.getTotalAnnualComp() / $scope.base - 1) * 100, 2);
+    };
 
 	$scope.options = {
             chart: {
