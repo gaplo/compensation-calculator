@@ -276,6 +276,35 @@
       </tbody>
     </table>
   </div>
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Regular terms (monetary only)</h3>
+    </div>
+    <table class="table table-condensed table-hover">
+      <tbody>
+        <tr>
+          <td><span class="glyphicon glyphicon-usd" aria-hidden="true"></span></td>
+          <td>Monthly Base Salary (nearest dollar and benefits excluded)</td>
+          <td><span ng-bind="getMonthlyWages()|currency"></span></td>
+        </tr>
+        <tr>
+          <td><span class="glyphicon glyphicon-usd" aria-hidden="true"></span></td>
+          <td>Annual Total Compensation (include bonus)</td>
+          <td><span ng-bind="getTotalAnnualComp()|currency"></span></td>
+        </tr>
+        <tr>
+          <td><span class="glyphicon glyphicon-usd" aria-hidden="true"></span></td>
+          <td>Monthly Total Compensation (include bonus)</td>
+          <td><span ng-bind="getTotalAnnualComp()/12|currency"></span></td>
+        </tr>
+        <tr class="info">
+          <td><span class="glyphicon glyphicon-stats" aria-hidden="true"></span></td>
+          <td>Breakeven increment (without considering benefits)</td>
+          <td><span ng-bind="getRegularTermsBreakEven()|number:2"></span>%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
   <nvd3 options="options" data="data"></nvd3>
 </body>
 <script src="bower_components/angular/angular.min.js"></script>
