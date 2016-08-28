@@ -87,7 +87,8 @@ app.controller('CalcCtrl', ['$scope', 'lodash', 'config',
     };
 
     $scope.getDirConYear = function() {
-      return $scope.dirConYear + lodash.round($scope.dirConMonth / 12, 2);
+      var year = $scope.dirConYear + lodash.round($scope.dirConMonth / 12, 2);
+      return year < 1 ? 0 : year;
     };
 
     $scope.getPermYear = function() {
